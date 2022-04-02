@@ -1,12 +1,18 @@
-const mongoose = require("mongoose")
+
 const express = require("express");
 const app = express();
+const dotenv = require("dotenv")
+const mongoose = require("mongoose")
 
 
-const DataBase="mongodb+srv://babersdn:react@cluster0.uv3lg.mongodb.net/MernDB?retryWrites=true&w=majority"; 
-mongoose.connect(DataBase).then(()=>{
+dotenv.config({path:"./config.env"})
+const Port = process.env.PORT
+const db = process.env.DATABASE;
+
+mongoose.connect(db).then(()=>{
     console.log("connection cuccesful")
 }).catch(err => console.log(err))
+
 
 
 const LMiddleware = (req,res,next)=>{
@@ -30,6 +36,6 @@ app.get("/login", (req,res)=>{
 app.get("/register", (req,res)=>{
     res.send("this is register rpage")
 })
-app.listen(3000,()=>{
-    console.log(`server is listening at port 3000`)
+app.listen(Port,()=>{
+    console.log(`server is listening at port ${Port}`)
 })
