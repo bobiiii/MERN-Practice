@@ -1,6 +1,13 @@
+const mongoose = require("mongoose")
 const express = require("express");
 const app = express();
-const port = 3000;
+
+
+const DataBase="mongodb+srv://babersdn:react@cluster0.uv3lg.mongodb.net/MernDB?retryWrites=true&w=majority"; 
+mongoose.connect(DataBase).then(()=>{
+    console.log("connection cuccesful")
+}).catch(err => console.log(err))
+
 
 const LMiddleware = (req,res,next)=>{
     console.warn("hello my friend")
@@ -23,6 +30,6 @@ app.get("/login", (req,res)=>{
 app.get("/register", (req,res)=>{
     res.send("this is register rpage")
 })
-app.listen(port,()=>{
-    console.log(`server is listening at port ${port}`)
+app.listen(3000,()=>{
+    console.log(`server is listening at port 3000`)
 })
