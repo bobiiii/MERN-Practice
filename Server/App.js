@@ -6,14 +6,11 @@ const mongoose = require("mongoose")
 
 
 dotenv.config({path:"./config.env"})
+require("./Database/conn")
+app.use(express.json())
+app.use(require("./Router/Auth"))
+
 const Port = process.env.PORT
-const db = process.env.DATABASE;
-
-mongoose.connect(db).then(()=>{
-    console.log("connection cuccesful")
-}).catch(err => console.log(err))
-
-
 
 const LMiddleware = (req,res,next)=>{
     console.warn("hello my friend")
@@ -21,7 +18,7 @@ const LMiddleware = (req,res,next)=>{
 };
 
 app.get("/", (req,res)=>{
-    res.send("hello from babar")
+    res.send("hello world this is from App.js file")
 })
 app.get("/about", (req,res)=>{
     res.send("About Pagecls")
