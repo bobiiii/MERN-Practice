@@ -12,43 +12,49 @@ router.get("/", (req, res) => {
 router.post("/register", async (req, res) => {
     const { name, phone, email, password, cpassword } = req.body;
     if (!name || !phone || !email || !password || !cpassword) {
-        return res.status(400).json({error:"pl fill alll required fields"})
+        return res.status(400).json({ error: "pl fill alll required fields" })
     }
     try {
         const userextemail = await User.findOne({ email: email });
         const userextphone = await User.findOne({ phone: phone });
         if (userextemail || userextphone) {
-            return res.status(400).json({error:"user already exists"})
+            return res.status(400).json({ error: "user already exists" })
+        } else if (password != cpassword) {
+            return res.status(400).json({ error: "password didnt match" })
+        } else {
+
+            const user = new User({ name, email, phone, password, cpassword })
+            
+            await user.save()
+
+            res.status(200).json({ message: "user registered succesfully" })
+
         }
-        const user = new User({name,email,phone,password,cpassword})
-        await user.save()
-        
-            res.status(200).json({message:"user registered succesfully"})
-        
+
 
     } catch (err) {
         console.log(err)
-     }
+    }
 
 
 })
 
-router.post("/login", async(req,res)=>{
-   const {email,password} = req.body;
-   if (!email || !password) {
-       return res.status(400).json({error:"pl fill req fields"})
-}try{
-    const chkemail = await User.findOne({email:email, password:password})
-    //const chkpass = await User.findOne({ password:password})
-   if (chkemail ) {
-       res.status(200).json({message:"logined succesfully"})
- }else{
-    res.status(400).json({error:"invalid credientials"})
- }
-}
- catch(err){
-     console.log(err)
- }
+router.post("/login", async (req, res) => {
+    const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(400).json({ error: "pl fill req fields" })
+    } try {
+        const chkemail = await User.findOne({ email: email, password: password })
+        //const chkpass = await User.findOne({ password:password})
+        if (chkemail) {
+            res.status(200).json({ message: "logined succesfully" })
+        } else {
+            res.status(400).json({ error: "invalid credientials" })
+        }
+    }
+    catch (err) {
+        console.log(err)
+    }
 
 
 })
