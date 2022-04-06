@@ -30,9 +30,6 @@ app.get("/contact",LMiddleware, (req,res)=>{
 app.get("/login", (req,res)=>{
     res.send("Login Page")
 })
-app.get("/register", (req,res)=>{
-    res.send("this is register rpage")
-})
 app.listen(Port,()=>{
     console.log(`server is listening at port ${Port}`)
 })
