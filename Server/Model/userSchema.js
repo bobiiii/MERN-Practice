@@ -2,7 +2,8 @@ const mongoose = require("mongoose")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
-
+//userschema means what value will be sent to DB
+//only this data typed by user will send to DB
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -32,8 +33,12 @@ const userSchema = new mongoose.Schema({
     }]
 
 })
-//hasing the password
+//hasing the password b4 sending to DB
+//used normal func bcz cant use "this" in arrow func 
+//userSchema.pre means do it b4 "save" to DB
+//this is middle ware whgich will run b4 saving data
 userSchema.pre("save",async function(next){
+    //
 if (this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 12)
     this.cpassword = await bcrypt.hash(this.cpassword, 12)
@@ -41,6 +46,7 @@ if (this.isModified("password")) {
 }
 next()
 })
+// adding cookie token to the DB
 userSchema.methods.generateAuthToken = async function(){
     try {
         let tokenB = jwt.sign({_id :this._id}, "ahsv")
