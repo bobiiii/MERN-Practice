@@ -1,7 +1,8 @@
 const express = require("express");
 const User = require("../Model/userSchema");
 const router = express.Router();
-
+const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
 router.get("/", (req, res) => {
     res.send("helloo this is from auth js file")
 
@@ -24,7 +25,7 @@ router.post("/register", async (req, res) => {
         } else {
 
             const user = new User({ name, email, phone, password, cpassword })
-            
+
             await user.save()
 
             res.status(200).json({ message: "user registered succesfully" })
@@ -40,20 +41,32 @@ router.post("/register", async (req, res) => {
 })
 
 router.post("/login", async (req, res) => {
+    
     const { email, password } = req.body;
     if (!email || !password) {
         return res.status(400).json({ error: "pl fill req fields" })
-    } try {
-        const chkemail = await User.findOne({ email: email, password: password })
-        //const chkpass = await User.findOne({ password:password})
-        if (chkemail) {
-            res.status(200).json({ message: "logined succesfully" })
-        } else {
+    } 
+    try {   const checkEmail = await User.findOne({ email: email })
+
+        if (checkEmail) {
+            const validPassword = await bcrypt.compare(password, checkEmail.password)
+            if (validPassword) {
+                res.json({ message: "you are logged in" })
+                console.log(validPassword)
+                   const token = await checkEmail.generateAuthToken()
+                   
+
+            } else {
+                res.json({ error: "password didnt match" })
+
+            }
+        }
+        else {
             res.status(400).json({ error: "invalid credientials" })
         }
     }
     catch (err) {
-        console.log(err)
+        console.log(` from catch ${err}`)
     }
 
 
