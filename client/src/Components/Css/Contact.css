@@ -1,0 +1,91 @@
+.main{
+    width: 100vw;
+    height: 89vh;
+    background-color: rgb(252, 252, 252);
+
+}
+.details-container{
+    background-color: rgba(248, 248, 248);
+    height: 14vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+     
+
+
+}
+.sub-dtl-container{
+    background-color: rgb(250, 255, 255);
+    width: 28%;
+    height: 100px;
+    margin: 0px 10px;
+    border: 1px solid rgb(194, 188, 188);
+    border-radius: 15px;
+    box-shadow: 10px 5px 10px grey ;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 10px;
+    
+
+}
+.messages-form{
+width: 60%;
+height: 70vh;
+margin: 30px auto;
+background-color: rgba(233, 233, 233, 0.966);
+border: 3px solid rgb(223, 220, 220);
+box-shadow: 10px 10px 30px grey;
+border-radius: 20px;
+}
+.messages-form >h2{
+    text-align: center;
+    margin: 15px auto;
+    text-transform: uppercase;
+}
+.contact-form{
+    width:80%;
+    height: 90%;
+    margin:  auto;
+}
+.contact-form-3{
+    width: 100%;
+    height: 15%;
+    display: flex;
+    justify-content: space-between;
+}
+.contact-form-3 input {
+    background-color: rgb(250, 252, 255);
+    width: 30%;
+    height: 60%;
+    border-radius: 5px;
+    border: none;
+    padding-left: 20px;
+    
+}
+.CMessageBox{
+    height: 70%;
+}
+.CMessageBox textarea{
+    background-color: rgb(250, 252, 255);
+    width: 100%;
+    height: 80%;
+    border: none;
+    border-radius: 5px;
+    padding: 15px 0px 0px 20px;
+}
+::placeholder{
+font-size: 20px;    
+}
+textarea:focus{
+    border: none;
+    background-color:white;
+        outline:none;
+}
+.CMessageBox  input{
+width: 25%;
+height: 12%;
+border: none;
+background-color: rgb(208, 208, 235);
+}
