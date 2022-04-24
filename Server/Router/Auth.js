@@ -89,6 +89,10 @@ router.get("/about",Authenticate, (req, res) => {
   res.send(req.rootUser);
 })
 
+router.get("/contactData", Authenticate,(req,res)=>{
+  res.send(req.rootUser)
+})
+
 // storing or checking data using promises
 
 // router.post("/register", (req, res) => {

@@ -1,14 +1,14 @@
 const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
-const cookieParser = require("cookie-parser")
+// const cookieParser = require("cookie-parser")
 const mongoose = require("mongoose");
 
 dotenv.config({ path: "./config.env" });
 require("./Database/conn");
 app.use(express.json());
 app.use(require("./Router/Auth"));
-app.use(cookieParser())
+// app.use(cookieParser())
 const Port = process.env.PORT;
 
 const LMiddleware = (req, res, next) => {
