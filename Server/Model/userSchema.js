@@ -48,11 +48,11 @@ next()
 })
 // adding cookie token to the DB
 userSchema.methods.generateAuthToken = async function(){
-    try {
-        let tokenB = jwt.sign({_id :this._id}, "ahsv")
-        this.tokens = this.tokens.concat({token:tokenB})
+    try { 
+        let token = jwt.sign({_id :this._id}, process.env.SECRET_KET)
+        this.tokens = this.tokens.concat({token:token})
          await this.save()
-         return tokenB;
+         return token;
     } catch (error) {
         console.log(error)
     }

@@ -1,9 +1,41 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./Css/About.css";
 import logo from "../Images/logo.jpg";
+import { useNavigate } from "react-router-dom";
 const About = () => {
+  const navigate = useNavigate()
+  const [userData,setUserdata] = useState({});
+  const aboutAuth = async () => {
+    try {
+      const resp = await fetch("/about",
+        {
+          method: "GET",
+          mode: "no-cors",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          },
+          credentials: "same-origin"
+        })
+      const data = await resp.json()
+        setUserdata(data);
 
-  
+      console.log("try of about auth is running")
+      if (!resp.status === 200) {
+        const error = new Error(resp.error)
+        console(` err from if ${error}`)
+      }
+    } catch (error) {
+      console.log(` error from aboututh catch  ${error}`)
+      navigate("/login")
+
+    }
+
+  }
+
+  useEffect(() => {
+    aboutAuth()
+  }, [])
   useEffect(() => {
     document.getElementById("def").click()
   }, [])
@@ -28,7 +60,6 @@ const About = () => {
 
   return (
     <>
-      {console.log("component is rendering ")}
 
       <div className="about-container">
         <form method="GET">
@@ -39,7 +70,7 @@ const About = () => {
             </div>
             <div className="gridrow1 gridcol2">
               <div className="mju">
-                <h2>Babar Khan</h2>
+                  <h2>{userData.name}</h2>
                 <h4>WEB DEVELOPER</h4>
                 <h5>Rankings 9/10</h5>
               </div>
@@ -85,10 +116,10 @@ const About = () => {
                   <h3>Profession</h3>
                 </section>
                 <section>
-                  <h3>123456</h3>
-                  <h3>Babar Khan</h3>
-                  <h3>Babersdn@gmail.com</h3>
-                  <h3>03060125220</h3>
+              <h3>{userData._id}</h3>
+              <h3>{userData.name}</h3>
+              <h3>{userData.email}</h3>
+              <h3>{userData.phone}</h3>
                   <h3>Web Developer</h3>
                 </section>
               </div>

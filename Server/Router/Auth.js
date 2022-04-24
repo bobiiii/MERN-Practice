@@ -3,11 +3,14 @@ const User = require("../Model/userSchema");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const cookieparser = require("cookie-parser")
 const Authenticate = require("../Middleware/Authenticate")
+router.use(cookieparser())
 
 //set path for homepage
 router.get("/", (req, res) => {
   res.send("helloo this is from auth js file");
+  
 });
 
 //user registration with Async func
@@ -61,8 +64,9 @@ router.post("/login", async (req, res) => {
       const validPassword = await bcrypt.compare(password, checkEmail.password);
       //creating token for cookie
       const token = await checkEmail.generateAuthToken();
-      res.cookie("jwtokenCookie", token, {
-        expires: new Date(Date.now() + 12000000),
+      console.log(token)
+      res.cookie("jwtoken", token, {
+        expires: new Date(Date.now() + 1200000000),
         httpOnly: true,
       });
       //after validPassword is true then
@@ -75,14 +79,15 @@ router.post("/login", async (req, res) => {
       res.status(400).json({ error: "invalid credientials" });
     }
   } catch (err) {
-    console.log(` from catch ${err}`);
+    console.log(` from  a catch ${err}`);
   }
 });
 
 
 router.get("/about",Authenticate, (req, res) => {
+  
   res.send(req.rootUser);
-});
+})
 
 // storing or checking data using promises
 
