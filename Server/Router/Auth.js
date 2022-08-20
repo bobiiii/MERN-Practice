@@ -4,7 +4,8 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieparser = require("cookie-parser")
-const Authenticate = require("../Middleware/Authenticate")
+const Authenticate = require("../Middleware/Authenticate");
+const { json } = require("express");
 router.use(cookieparser())
 
 //set path for homepage
@@ -92,7 +93,25 @@ router.get("/about",Authenticate, (req, res) => {
 router.get("/contactData", Authenticate,(req,res)=>{
   res.send(req.rootUser)
 })
-
+router.post("/contact",Authenticate, async (req, res) => {
+  try {
+    const {name,email,phone,msg} = req.body
+    if (!name || !email || !phone || !msg) {
+      console.log("error on msg data")
+      return res.json({error:"error in contact form"})
+    } 
+    const checkUser = await User.findOne({_id: req.userID})
+     if (checkUser) {
+       const userMsg = await checkUser.addMessage(name,email,phone,msg)
+       await checkUser.save()
+       res.status(200),json({message:"user msg succesfully"})
+     }
+  } catch (error) {
+    console.log("error from  contact router" + error)
+  }
+  
+  
+});
 // storing or checking data using promises
 
 // router.post("/register", (req, res) => {

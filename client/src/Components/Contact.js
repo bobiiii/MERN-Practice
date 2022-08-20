@@ -2,7 +2,43 @@ import React,{useEffect,useState} from "react";
 import "./Css/Contact.css";
 
 const Contact = () => {
-  const [userData,setUserdata] = useState({});
+  const [userData,setUserdata] = useState({
+    name:"", email:"", phone:"", msg:"a"
+  });
+  
+  const handleinput=(e)=>{
+    const name = e.target.name
+    const value = e.target.value
+    setUserdata({...userData,[name]:value})
+    
+  }
+
+  const PostData= async(e)=>{
+    e.preventDefault();
+    const {name,email,phone,msg} = userData;
+    const res = await fetch("/contact",{
+      method: "POST",
+      headers:{
+        "Content-Type" : "application/json"
+      },
+      body: JSON.stringify({
+        name,email,phone,msg
+      })
+
+    }
+    )
+    const data = await res.json()
+    if (!data) {
+      console.log("message not sent")
+      
+    } else {
+      alert("message sent succesfully")
+      console.log("aletr is here")
+      setUserdata({...userData, msg:""})
+      
+    }
+
+  }
   const contactAuth = async () => {
     try {
       const resp = await fetch("/contactData",
@@ -14,7 +50,7 @@ const Contact = () => {
           },
         })
       const data = await resp.json()
-        setUserdata(data);
+        setUserdata({...userData, name:data.name, email:data.email, phone:data.phone});
 
       if (!resp.status === 200) {
         const error = new Error(resp.error)
@@ -49,16 +85,21 @@ const Contact = () => {
         </div>
         <div className="messages-form">
           <h2>Get In Touch</h2>
-          <form className="contact-form">
+          <form method="POST" className="contact-form">
             <div className="contact-form-3">
-              <input type="text" placeholder="Your Name" value={userData.name} required />
-              <input type="text" placeholder="Email" value={userData.email} required />
-              <input type="number" placeholder="Phone" value={userData.phone} required />
+              <input type="text" placeholder="Your Name"  value={userData.name}
+              name="name" onChange={handleinput} required />
+              <input type="text" placeholder="Email"  value={userData.email}
+             name="email"  onChange={handleinput} required />
+              <input type="number" placeholder="Phone"  value={userData.phone}
+             name="phone"  onChange={handleinput} required />
             </div>
             <div className="CMessageBox">
-            <textarea type="text" placeholder=" Type Your Message Here"  required ></textarea>
+            <textarea type="text" placeholder=" Type Your Message Here" value={userData.msg}
+           name="msg"  onChange={handleinput}
+            required ></textarea>
             
-            <input type="submit"/>  
+            <input onClick={PostData} type="submit"/>  
             </div>
           </form>
         </div>
